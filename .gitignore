@@ -1,0 +1,10 @@
+# IDE
+.vscode
+.idea
+
+# Dev
+public
+
+# Composer
+vendor/
+composer.lock
