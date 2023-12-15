@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Geekmusclay\Algorithms\Abstract;
 
+use Geekmusclay\Algorithms\Scalar;
+
 abstract class AbstractType
 {
     const BOOL_VALUES = ['true', 'false', true, false];
