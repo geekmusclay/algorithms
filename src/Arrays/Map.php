@@ -8,19 +8,37 @@ use JsonSerializable;
 use Geekmusclay\Algorithms\Scalar;
 use Geekmusclay\Algorithms\Abstract\AbstractType;
 
+/**
+ * Describe a scalar array
+ */
 class Map extends AbstractType implements JsonSerializable
 {
-    /** @var Scalar[] $values */
+    /** @var Scalar[] $values The values stored in the map */
     private array $values;
 
-    public function __construct(array $value)
+    /**
+     * Undocumented function
+     *
+     * @param array $value
+     */
+    public function __construct(array $value, bool $instanciate = false)
     {
         $this->values = $value;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return string String representation of the array
+     */
     public function __toString()
     {
         return $this->json();
+    }
+
+    public function get(int $index): mixed
+    {
+        return $this->values[$index];
     }
 
     public function push(mixed $value): self
@@ -30,14 +48,20 @@ class Map extends AbstractType implements JsonSerializable
         return $this;
     }
 
-    public function value(): array
+    public function values(): array
     {
         return $this->values;
     }
 
-    public function get(int $index): mixed
+    public function array(): array
     {
-        return $this->values[$index];
+        return array_map(function ($value) {
+            if ($value instanceof Scalar) {
+                return $value->value();
+            }
+
+            return $value;
+        }, $this->values);
     }
 
     public function search(mixed $value): ?int
@@ -69,14 +93,26 @@ class Map extends AbstractType implements JsonSerializable
         return $this;
     }
 
+    public function slice(int $offset, ?int $length = null, bool $preserve_keys = false): self
+    {
+        $this->values = array_slice($this->values, $offset, $length, $preserve_keys);
+
+        return $this;
+    }
+
+    public function implode(string $separator): string
+    {
+        return implode($separator, $this->values);
+    }
+
     public function jsonSerialize(): mixed
     {
         return $this->values;
     }
 
-    public function json(): string|false
+    public function json(int $flags = 0, int $depth = 512): string|false
     {
-        return json_encode($this->values);
+        return json_encode(array_values($this->values), $flags, $depth);
     }
 
     public function first(): mixed

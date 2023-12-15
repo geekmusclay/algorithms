@@ -106,6 +106,11 @@ class Scalar extends AbstractType implements JsonSerializable
         return strlen($this->string);
     }
 
+    public function pos(string $string): int|false
+    {
+        return strpos($string, $this->string());
+    }
+
     public function trim(): self
     {
         $this->string = trim($this->string);
