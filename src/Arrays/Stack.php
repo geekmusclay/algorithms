@@ -35,6 +35,13 @@ class Stack
         return array_pop($this->stack);
     }
 
+    public function reverse(): self
+    {
+        $this->stack = array_reverse($this->stack);
+
+        return $this;
+    }
+
     public function isEmpty(): bool
     {
         return 0 === count($this->stack);

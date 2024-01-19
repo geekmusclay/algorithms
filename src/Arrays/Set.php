@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Geekmusclay\Algorithms\Arrays;
 
 use JsonSerializable;
-use Geekmusclay\Algorithms\Scalar;
+use Geekmusclay\Algorithms\Common\Scalar;
 use Geekmusclay\Algorithms\Abstract\AbstractType;
 
 /**
  * Describe a scalar array
  */
-class Map extends AbstractType implements JsonSerializable
+class Set extends AbstractType implements JsonSerializable
 {
     /** @var Scalar[] $values The values stored in the map */
     private array $values;
@@ -21,7 +21,7 @@ class Map extends AbstractType implements JsonSerializable
      *
      * @param array $value
      */
-    public function __construct(array $value, bool $instanciate = false)
+    public function __construct(array $value)
     {
         $this->values = $value;
     }
@@ -36,7 +36,7 @@ class Map extends AbstractType implements JsonSerializable
         return $this->json();
     }
 
-    public function get(int $index): mixed
+    public function get(int|string $index): mixed
     {
         return $this->values[$index];
     }
@@ -129,6 +129,16 @@ class Map extends AbstractType implements JsonSerializable
         return end($this->values);
     }
 
+    public function min(): int
+    {
+        return min(PHP_INT_MAX, ...$this->values);
+    }
+
+    public function max(): int
+    {
+        return max(PHP_INT_MIN, ...$this->values);
+    }
+
     public function sum(): int
     {
         return array_reduce($this->values, function ($carry, $item) {
@@ -142,9 +152,9 @@ class Map extends AbstractType implements JsonSerializable
         return count($this->values);
     }
 
-    public function keys(): Map
+    public function keys(): Set
     {
-        return new Map(
+        return new Set(
             $this->instanciate(
                 array_keys($this->values),
                 Scalar::class

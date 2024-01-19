@@ -35,6 +35,13 @@ class Queue
         return array_shift($this->queue);
     }
 
+    public function reverse(): self
+    {
+        $this->queue = array_reverse($this->queue);
+
+        return $this;
+    }
+
     public function isEmpty(): bool
     {
         return 0 === count($this->queue);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Geekmusclay\Algorithms\Abstract;
 
-use Geekmusclay\Algorithms\Scalar;
+use Geekmusclay\Algorithms\Common\Scalar;
 
 abstract class AbstractType
 {
@@ -31,10 +31,12 @@ abstract class AbstractType
             return $value;
         }
 
-        if ((floatval($value) - intval($value)) > 0) {
-            return floatval($value);
+        $float = floatval($value);
+        $int = intval($value);
+        if (($float - $int) > 0) {
+            return $float;
         }
 
-        return intval($value);
+        return $int;
     }
 }
